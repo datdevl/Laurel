@@ -1,0 +1,24 @@
+BIA
+    anh1.png
+    bia2.png
+    khoa3.png
+    anh1.png
+    khoa3.png
+NAME KHÓA HỌC
+    Toán Học Nâng Cao
+    Vật Lí Thú Vị
+    Hóa Học Dễ Hiểu
+    Tin học để chơi
+    Vật Lí Thú Vịs
+ID
+    TO203K7
+    LI9S21U
+    HO12KA3
+    TINQQK7
+    TINQQK8
+LINK
+    https://drive.google.com/file/d/1uzxQ_8xidqCIUOUIiB5MEItnmFeZV66y/view?fbclid=IwY2xjawLE6gpleHRuA2FlbQIxMQBicmlkETFVUG1VaXJCY3FvZWgzaGVPAR7Ne2jPtElFsmUZEJkh_HSzlnX5zvpoWNRS-ILbzOD6EAnpFY0d6Dbzm1qdXA_aem_4oDFns5dElC6xVyno6azBA
+    https://drive.google.com/file/d/1cEMOt1rVob-eXU1JBKS0dTroYpEtPtBl/view
+    https://drive.google.com/drive/folders/1zzmHSrxOizK5gP_GDH-xGmONTquP6_RZ?fbclid=IwY2xjawLq1wZleHRuA2FlbQIxMABicmlkETFVS1VqQnJtYUp1b1p4d242AR7Az1vJmV6rcbIdQgNp1swFtqT_xawiTZCxyOpzhter8aFZi7W1i0qy9KjP1g_aem_s5KBxQ0JXgz1VZq_-YxO_A
+    https://drive.google.com/file/d/1cEMOt1rVob-eXU1JBKS0dTroYpEtPtBl/view
+    https://drive.google.com/file/d/1cEMOt1rVob-eXU1JBKS0dTroYpEtPtBl/view

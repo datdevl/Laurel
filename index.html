@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laurel Learn DRIVE | Học Vui - Tỏa Sáng</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
+    <script src="https://unpkg.com/gsap@3/dist/ScrollTrigger.min.js"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+
+    <style>
+        /* ---- CÀI ĐẶT CHUNG & THEME ---- */
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: #FFFBF5; /* Màu nền trắng kem dễ chịu */
+            cursor: none; /* Ẩn con trỏ mặc định */
+        }
+        
+        /* Con trỏ tùy chỉnh hiện đại */
+        .cursor-dot, .cursor-outline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            border-radius: 50%;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+        }
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #ec4899; /* Màu hồng đậm */
+        }
+        .cursor-outline {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #f472b6; /* Màu hồng nhạt */
+            transition: transform 0.2s ease-out, opacity 0.2s ease-out;
+        }
+
+        /* ---- HIỆU ỨNG & ANIMATION ---- */
+        
+        /* Hiệu ứng "Glassmorphism" cho Navigation */
+        .glass-nav {
+            background-color: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+            --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
+            box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+        }
+
+        /* Nút bấm có hiệu ứng Gradient chuyển động */
+        .btn-gradient {
+            background: linear-gradient(45deg, #f472b6, #ec4899, #facc15);
+            background-size: 200% 200%;
+            transition: background-position 0.5s ease, transform 0.2s ease, box-shadow 0.2s ease;
+            color: white;
+            font-weight: 700;
+        }
+        .btn-gradient:hover {
+            background-position: 100% 100%;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(236, 72, 153, 0.3);
+        }
+        .btn-gradient:active {
+            transform: translateY(0);
+        }
+
+        /* Thẻ khóa học được thiết kế lại */
+        .course-card-reimagined {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            border: 1px solid #fce7f3; /* Viền hồng rất nhạt */
+        }
+        .course-card-reimagined:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(236, 72, 153, 0.15);
+        }
+        .course-card-reimagined .card-image {
+            aspect-ratio: 16/9;
+            object-fit: cover;
+        }
+
+        /* Accordion cho FAQ */
+        .faq-item .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out, padding 0.5s ease-out;
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+        .faq-item.active .faq-answer {
+            max-height: 200px; /* Chiều cao đủ lớn */
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+        }
+        .faq-item.active .faq-icon {
+            transform: rotate(180deg);
+        }
+        .faq-icon {
+            transition: transform 0.3s ease;
+        }
+
+    </style>
+</head>
+<body class="text-gray-700">
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-outline" id="cursor-outline"></div>
+
+    <nav class="glass-nav sticky top-0 z-50">
+      <div class="container mx-auto px-6 py-3 flex justify-between items-center">
+        <div class="flex items-center space-x-3">
+          <img src="./logo.png" alt="Logo Laurel Learn DRIVE" class="h-14"> <span class="text-2xl font-black text-pink-600">Laurel Learn DRIVE 🍀</span>
+        </div>
+        <div class="hidden md:flex items-center space-x-8">
+          <a href="#home" class="font-bold text-gray-600 hover:text-pink-500 transition-colors">Trang Chủ</a>
+          <a href="#courses" class="font-bold text-gray-600 hover:text-pink-500 transition-colors">Khóa Học</a>
+          <a href="#faq" class="font-bold text-gray-600 hover:text-pink-500 transition-colors">Câu Hỏi</a>
+          <a href="#contact" class="font-bold text-gray-600 hover:text-pink-500 transition-colors">Liên Hệ</a>
+        </div>
+      </div>
+    </nav>
+
+    <section id="home" class="min-h-screen flex items-center relative overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=2132&auto=format&fit=crop" 
+                 alt="Học tập" class="w-full h-full object-cover opacity-20">
+            <div class="absolute inset-0 bg-gradient-to-t from-white via-pink-50/50 to-transparent"></div>
+        </div>
+        
+        <div class="container mx-auto px-6 text-center relative z-10">
+            <h2 data-fade class="text-4xl md:text-6xl font-black text-pink-600 mb-4" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.1);">Học Vui - Tỏa Sáng</h2>
+            <p data-fade class="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto mb-8">Biến giấc mơ học tập thành hiện thực với những khóa học siêu dễ thương, dễ hiểu và đầy cảm hứng!</p>
+            <a href="#courses" data-fade class="btn-gradient px-8 py-4 rounded-full inline-block">Khám Phá Ngay!</a>
+        </div>
+    </section>
+
+    <section id="courses" class="py-20">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 data-fade class="text-4xl font-black text-pink-600 mb-3">Khám Phá Các Khóa Học</h2>
+                <p data-fade class="text-lg text-gray-500">Những bài học được thiết kế để bạn yêu thích việc học.</p>
+            </div>
+            <div id="course-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                </div>
+        </div>
+    </section>
+
+    <section id="payment" class="py-20 hidden">
+        <div class="container mx-auto px-6 text-center">
+            <h2 data-fade class="text-4xl font-black text-pink-600 mb-4">Thanh Toán Khóa Học</h2>
+            <p data-fade id="payment-course-name" class="text-lg text-gray-500 mb-8">Bạn đang đăng ký khóa học:</p>
+            <div data-fade class="max-w-md mx-auto bg-white p-8 rounded-2xl shadow-xl">
+                <img src="./QR.png" alt="QR Code Thanh Toán" class="mx-auto mb-6 rounded-lg w-64 h-64"> <p class="text-gray-600 mb-4">Quét mã QR hoặc nhập ID khóa học để bắt đầu học ngay!</p>
+                <input id="course-id" type="text" placeholder="Nhập ID khóa học của bạn" class="w-full p-3 border-2 border-gray-200 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-pink-500 transition">
+                <button onclick="verifyCourse()" class="btn-gradient w-full px-4 py-3 rounded-lg">Xác Nhận & Vào Học</button>
+                <p id="error-message" class="text-red-500 hidden mt-4 font-bold">Ối, ID khóa học không đúng! Vui lòng thử lại.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="faq" class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 data-fade class="text-4xl font-black text-pink-600 mb-3">Câu Hỏi Thường Gặp</h2>
+                <p data-fade class="text-lg text-gray-500">Những điều bạn có thể thắc mắc.</p>
+            </div>
+            <div class="max-w-3xl mx-auto space-y-4">
+                <div data-fade class="faq-item bg-pink-50 rounded-xl p-6 cursor-pointer">
+                    <div class="faq-question flex justify-between items-center">
+                        <h3 class="text-xl font-bold text-pink-700">Làm thế nào để đăng ký khóa học?</h3>
+                        <i class="fas fa-chevron-down faq-icon text-pink-500"></i>
+                    </div>
+                    <div class="faq-answer text-gray-600">
+                        <p>Rất đơn giản! Bạn chỉ cần chọn khóa học yêu thích ở trên, nhấn nút "Đăng Ký Ngay". Trang sẽ chuyển bạn đến phần thanh toán. Sau khi quét mã và nhập đúng ID khóa học, bạn sẽ được đưa đến link tài liệu ngay lập tức.</p>
+                    </div>
+                </div>
+                <div data-fade class="faq-item bg-pink-50 rounded-xl p-6 cursor-pointer">
+                    <div class="faq-question flex justify-between items-center">
+                        <h3 class="text-xl font-bold text-pink-700">Khóa học có thời hạn không?</h3>
+                        <i class="fas fa-chevron-down faq-icon text-pink-500"></i>
+                    </div>
+                    <div class="faq-answer text-gray-600">
+                        <p>Không đâu! Một khi bạn đã đăng ký thành công, khóa học sẽ thuộc về bạn mãi mãi. Bạn có thể xem lại bất cứ khi nào bạn muốn.</p>
+                    </div>
+                </div>
+                <div data-fade class="faq-item bg-pink-50 rounded-xl p-6 cursor-pointer">
+                    <div class="faq-question flex justify-between items-center">
+                        <h3 class="text-xl font-bold text-pink-700">Tôi có được hoàn tiền không?</h3>
+                        <i class="fas fa-chevron-down faq-icon text-pink-500"></i>
+                    </div>
+                    <div class="faq-answer text-gray-600">
+                        <p>Chắc chắn rồi! Chúng mình có chính sách hoàn tiền trong vòng 7 ngày nếu bạn cảm thấy khóa học không phù hợp. Hãy liên hệ với team để được hỗ trợ nhé.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="py-20">
+        <div class="container mx-auto px-6 text-center">
+            <h2 data-fade class="text-4xl font-black text-pink-600 mb-12">Gặp Gỡ Team Siêu Dễ Thương</h2>
+            <div data-fade class="max-w-xl mx-auto bg-white p-8 rounded-2xl shadow-xl text-center">
+                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1888&auto=format&fit=crop" alt="Admin" class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-pink-200">
+                <h3 class="text-2xl font-bold text-pink-600 mb-1">Nguyễn Thị Laurel</h3>
+                <p class="text-gray-500 mb-6">Người sáng lập & truyền cảm hứng</p>
+                <div class="flex justify-center space-x-6 mb-6">
+                    <a href="tel:0123456789" class="text-gray-400 hover:text-pink-500 transition-colors text-2xl"><i class="fas fa-phone"></i></a>
+                    <a href="https://zalo.me/0123456789" class="text-gray-400 hover:text-pink-500 transition-colors text-2xl"><i class="fas fa-comment-dots"></i></a>
+                    <a href="https://facebook.com/hoctothon" class="text-gray-400 hover:text-pink-500 transition-colors text-2xl"><i class="fab fa-facebook"></i></a>
+                </div>
+                 <p class="text-gray-600 mb-2">Email: <a href="mailto:support@laurellearn.com" class="text-pink-600 hover:underline">support@laurellearn.com</a></p>
+                <p class="text-gray-600">Hotline: <a href="tel:0123456789" class="text-pink-600 hover:underline">0123 456 789</a></p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-pink-800 text-pink-200 py-8">
+        <div class="container mx-auto px-6 text-center">
+            <p>© 2025 Laurel Learn DRIVE. Thiết kế với ❤️ bởi team Laurel.</p>
+        </div>
+    </footer>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        /* ---- HIỆU ỨNG CON TRỎ CHUỘT ---- */
+        const cursorDot = document.getElementById('cursor-dot');
+        const cursorOutline = document.getElementById('cursor-outline');
+
+        window.addEventListener('mousemove', (e) => {
+            const { clientX, clientY } = e;
+            gsap.to(cursorDot, { x: clientX, y: clientY, duration: 0.1 });
+            gsap.to(cursorOutline, { x: clientX, y: clientY, duration: 0.3 });
+        });
+
+        document.querySelectorAll('a, button, .cursor-pointer').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                gsap.to(cursorOutline, { scale: 1.5, opacity: 0.5, duration: 0.3 });
+            });
+            el.addEventListener('mouseleave', () => {
+                gsap.to(cursorOutline, { scale: 1, opacity: 1, duration: 0.3 });
+            });
+        });
+
+        /* ---- HIỆU ỨNG CUỘN TRANG (GSAP) ---- */
+        document.querySelectorAll("[data-fade]").forEach(element => {
+            gsap.from(element, {
+                scrollTrigger: {
+                    trigger: element,
+                    start: "top 85%", // Bắt đầu khi phần tử ở 85% cuối màn hình
+                    toggleActions: "play none none none"
+                },
+                opacity: 0,
+                y: 50,
+                duration: 0.8,
+                ease: "power3.out"
+            });
+        });
+        
+        /* ---- TẢI VÀ HIỂN THỊ KHÓA HỌC ---- */
+        async function loadCourses() {
+            try {
+                const response = await fetch('khoahoc.txt');
+                if (!response.ok) throw new Error('Không thể tải file khoahoc.txt');
+                const text = await response.text();
+                
+                const lines = text.split('\n').map(line => line.trim()).filter(line => line);
+                let images = [], names = [], ids = [], links = [];
+                let currentSection = '';
+
+                lines.forEach(line => {
+                    if (line === 'BIA') currentSection = 'images';
+                    else if (line === 'NAME KHÓA HỌC') currentSection = 'names';
+                    else if (line === 'ID') currentSection = 'ids';
+                    else if (line === 'LINK') currentSection = 'links';
+                    else if (currentSection) eval(`${currentSection}.push(line)`);
+                });
+
+                const courseData = images.map((image, index) => ({
+                    image: `anhbia/${image}`,
+                    name: names[index] || 'Chưa có tên',
+                    id: ids[index] || 'N/A',
+                    link: links[index] || '#'
+                }));
+
+                const courseList = document.getElementById('course-list');
+                courseList.innerHTML = ''; // Xóa nội dung cũ
+                
+                courseData.forEach((course, index) => {
+                    const courseCard = document.createElement('div');
+                    courseCard.className = 'course-card-reimagined';
+                    // Sử dụng ảnh placeholder đẹp hơn khi ảnh gốc lỗi
+                    const placeholderName = encodeURIComponent(course.name);
+                    courseCard.innerHTML = `
+                        <img src="${course.image}" alt="${course.name}" class="card-image" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1543269865-cbf427effbad?q=80&w=400&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=${placeholderName}';">
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-pink-600 mb-2 h-14">${course.name}</h3>
+                            <p class="text-gray-500 mb-6 h-20 overflow-hidden">Khám phá ${course.name.toLowerCase()} với phương pháp siêu dễ hiểu và vui nhộn!</p>
+                            <a href="#payment" onclick="showPayment('${course.id}', '${course.name}')" class="btn-gradient px-6 py-3 rounded-full inline-block">Đăng Ký Ngay</a>
+                        </div>
+                    `;
+                    courseList.appendChild(courseCard);
+
+                    // Hiệu ứng xuất hiện so le cho từng thẻ
+                    gsap.from(courseCard, {
+                        scrollTrigger: {
+                            trigger: courseCard,
+                            start: "top 90%",
+                            toggleActions: "play none none none"
+                        },
+                        opacity: 0,
+                        y: 60,
+                        duration: 0.8,
+                        delay: index * 0.1,
+                        ease: "power3.out"
+                    });
+                });
+
+                window.courseData = courseData;
+            } catch (error) {
+                console.error(error);
+                document.getElementById('course-list').innerHTML = '<p class="text-red-500 text-center col-span-3">Lỗi khi tải danh sách khóa học. Vui lòng thử lại sau.</p>';
+            }
+        }
+
+        /* ---- CHỨC NĂNG THANH TOÁN ---- */
+        function showPayment(courseId, courseName) {
+            document.querySelector('#courses').classList.add('hidden');
+            document.querySelector('#payment').classList.remove('hidden');
+            
+            // Cập nhật tên khóa học và lưu ID
+            document.getElementById('payment-course-name').textContent = `Bạn đang đăng ký khóa học: "${courseName}"`;
+            const courseIdInput = document.getElementById('course-id');
+            courseIdInput.dataset.expectedId = courseId; // Lưu ID đúng vào data attribute
+            courseIdInput.value = ''; // Xóa input cũ
+            document.getElementById('error-message').classList.add('hidden');
+
+            // Cuộn đến phần thanh toán
+            document.querySelector('#payment').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function verifyCourse() {
+            const courseIdInput = document.getElementById('course-id');
+            const enteredId = courseIdInput.value.trim();
+            const expectedId = courseIdInput.dataset.expectedId;
+            const course = window.courseData.find(c => c.id === expectedId);
+
+            if (course && enteredId === expectedId) {
+                document.getElementById('error-message').classList.add('hidden');
+                window.location.href = course.link; // Chuyển hướng đến link Drive
+            } else {
+                document.getElementById('error-message').classList.remove('hidden');
+            }
+        }
+
+        /* ---- HIỆU ỨNG ACCORDION CHO FAQ ---- */
+        document.querySelectorAll('.faq-item').forEach(item => {
+            item.addEventListener('click', () => {
+                // Đóng tất cả các item khác
+                document.querySelectorAll('.faq-item.active').forEach(activeItem => {
+                    if (activeItem !== item) {
+                        activeItem.classList.remove('active');
+                    }
+                });
+                // Mở/đóng item được click
+                item.classList.toggle('active');
+            });
+        });
+
+        // Tải danh sách khóa học khi trang được tải
+        document.addEventListener('DOMContentLoaded', loadCourses);
+    </script>
+</body>
+</html>
